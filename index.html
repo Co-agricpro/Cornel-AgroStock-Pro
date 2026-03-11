@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cornel AgroStock Pro</title>
+<link rel="manifest" href="manifest.json">
+<style>
+body { font-family: Arial; margin:0; padding:20px; background:#f5f5f5; }
+header { background:#0B6623; color:white; padding:15px; text-align:center; }
+button { background:#FFD700; border:none; padding:10px; margin:5px 0; width:100%; font-size:16px; }
+input { padding:8px; width:100%; margin:5px 0; }
+.card { background:white; padding:15px; margin-top:10px; border-radius:8px; }
+</style>
+</head>
+<body>
+
+<header>
+<h2>Cornel AgroStock Pro</h2>
+</header>
+
+<div class="card">
+<h3>Add Stock</h3>
+<input id="item" placeholder="Item name">
+<input id="qty" type="number" placeholder="Quantity">
+<button onclick="addStock()">Add Stock</button>
+</div>
+
+<div class="card">
+<h3>Record Sale</h3>
+<input id="saleItem" placeholder="Item name">
+<input id="saleQty" type="number" placeholder="Quantity sold">
+<button onclick="recordSale()">Record Sale</button>
+</div>
+
+<div class="card">
+<h3>Inventory</h3>
+<ul id="inventory"></ul>
+</div>
+
+<script>
+let inventory = JSON.parse(localStorage.getItem("inventory")) || {};
+
+function save() {
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+  display();
+}
+
+function addStock() {
+  let item = document.getElementById("item").value;
+  let qty = parseInt(document.getElementById("qty").value);
+  if(!item || !qty) return;
+  inventory[item] = (inventory[item] || 0) + qty;
+  save();
+}
+
+function recordSale() {
+  let item = document.getElementById("saleItem").value;
+  let qty = parseInt(document.getElementById("saleQty").value);
+  if(!inventory[item] || inventory[item] < qty) return alert("Not enough stock");
+  inventory[item] -= qty;
+  save();
+}
+
+function display() {
+  let list = document.getElementById("inventory");
+  list.innerHTML = "";
+  for(let item in inventory){
+    list.innerHTML += "<li>"+item+": "+inventory[item]+"</li>";
+  }
+}
+
+display();
+</script>
+
+</body>
+</html> 

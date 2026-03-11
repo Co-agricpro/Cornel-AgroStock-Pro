@@ -1,0 +1,9 @@
+Json
+{
+  "name": "Cornel AgroStock Pro",
+  "short_name": "AgroStock",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFD700",
+  "theme_color": "#0B6623"
+}
